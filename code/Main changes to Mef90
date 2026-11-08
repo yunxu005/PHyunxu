@@ -1,1 +1,30 @@
+Main changes to Mef90.
 
+We added three new Fortran module files -- m_MEF90_DefMechAT1MT.F90,
+m_MEF90_DefMechAT1REU.F90 and m_MEF90_DefMechAT1SC.F90 -- which implement the
+proposed degradation function a(alpha) together with its first and second
+derivatives for the Mori-Tanaka, Reuss lower-bound and self-consistent
+homogenization strategies.
+
+We also modified five existing files:
+
+  1. m_MEF90_DefMechCtx.F90
+     We registered the enum values and string names of the three new types,
+     added two parameters E0 and E1 to every cell-set option block, and added a
+     subroutine that automatically extracts the two phase moduli from the YAML
+     YoungsModulus entries, taking the largest value as E1 and the smallest as
+     E0.
+
+  2. m_MEF90_DefMechAT.F90
+     We added three branches in the factory function, which instantiate the
+     corresponding model by type name and pass E0 and E1 into it.
+
+  3. vDef.F90
+     We call the modulus-filling subroutine once, after the material properties
+     have been read.
+
+  4. Makefile and Makefile.include in m_DefMech
+     We added the compilation rules and dependencies for the three new files.
+
+  5. Six default-value files that use positional initialization
+     We supplied two extra values to each of them to match the new fields.
